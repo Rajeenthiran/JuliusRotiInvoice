@@ -4,7 +4,7 @@ import {AuthGuard} from '@angular/fire/auth-guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'invoice',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -17,6 +17,11 @@ export const routes: Routes = [
       {
         path: 'invoice',
         loadChildren: () => import('./views/invoice/routes').then((m) => m.routes),
+        canActivate:[AuthGuard]
+      },
+      {
+        path: 'company',
+        loadChildren: () => import('./views/company/routes').then((m) => m.routes),
         canActivate:[AuthGuard]
       },
 

@@ -1,0 +1,93 @@
+<c-row ngPreserveWhitespaces>
+
+  <div class="invoice-container">
+    <h2 class="invoice-title">ADD STORE</h2>
+
+    <c-card class="invoice-card">
+      <form>
+        <!-- Customer Info -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Store Name</label>
+            <input type="text" class="form-control" name="storeName" [(ngModel)]="storeName"  placeholder="Enter store name" />
+          </div>
+        </div>
+        Store Location
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Street</label>
+            <input name="street" class="form-control" [(ngModel)]="address.street" placeholder="1001 Sandhurst Cir" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Unit No</label>
+            <input name="unit" class="form-control" [(ngModel)]="address.unit" placeholder="Unit 4" />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Province</label>
+            <select name="province" class="form-select" [(ngModel)]="address.province" (change)="onProvinceChange()" required>
+              <option value="">Select Province</option>
+              @for (prov of provinces; track prov.code) {
+                <option [value]="prov.code"> {{ prov.name }} </option>
+              }@empty {
+              <li>There are no items.</li>
+              }
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">City</label>
+            <select name="city" class="form-select" [(ngModel)]="address.city" [disabled]="!cities.length" required>
+              <option value="">Select City</option>
+              @for (city of cities; track city) {
+              <option [value]="city"> {{ city }} </option>
+              }@empty {
+              <li>There are no items.</li>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Postal Code</label>
+            <input name="postalCode" class="form-control" [(ngModel)]="address.postalCode" placeholder="XXX XXX" required />
+          </div>
+        </div>
+        <!-- Customer Info -->
+        <div class="row mb-3">
+          <div class="col-md-3">
+            <label class="form-label">Contact Name</label>
+            <input type="text" class="form-control" name="contactName" [(ngModel)]="contactName" placeholder="Enter contact name" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Contact Email</label>
+            <input type="text" class="form-control" name="contactEmail" [(ngModel)]="contactEmail" placeholder="Enter contact email" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Store Phone</label>
+            <input type="text" class="form-control" name="storePhone" [(ngModel)]="storePhone" placeholder="Enter store phone" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Personal Phone</label>
+            <input type="text" class="form-control" name="personalPhone" [(ngModel)]="personalPhone" placeholder="Enter personal phone" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10">
+
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-primary mt-2" (click)="addStore()">
+              <i class="cil-plus"></i> Add
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </c-card>
+  </div>
+
+</c-row>
+

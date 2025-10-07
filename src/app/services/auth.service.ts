@@ -19,9 +19,6 @@ export class AuthService {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
 
-      console.log('check 1');
-      console.log(user);
-
       // ✅ Step 2: Save user data in Firestore
       await setDoc(doc(this.firestore, 'Users', user.uid), {
         uid: user.uid,

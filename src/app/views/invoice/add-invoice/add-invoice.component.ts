@@ -21,12 +21,14 @@ import {DecimalPipe, NgStyle} from '@angular/common';
 export class AddInvoiceComponent {
    userInfo:any;
   selectedDate:string = '';
+  dateEntered:string = '';
 
    constructor(private authService:AuthService) {
      this.userInfo=authService.getUser();
      console.log(this.userInfo);
      const today = new Date();
      this.selectedDate = today.toISOString().substring(0, 10);
+     this.dateEntered = today.toISOString().substring(0, 10);
    }
 
   getTotal() {
@@ -35,6 +37,6 @@ export class AddInvoiceComponent {
 
 
   addItem() {
-
+    console.log(this.selectedDate);
   }
 }

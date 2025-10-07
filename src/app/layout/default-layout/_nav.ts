@@ -25,6 +25,22 @@ export const navItems: INavData[] = [
     linkProps: { fragment: 'headings' },
     iconComponent: { name: 'cil-pencil' }
   },
+  {
+    title: true,
+    name: 'Store'
+  },
+  {
+    name: 'View Store',
+    url: '/company/view-company',
+    linkProps: { fragment: 'headings' },
+    iconComponent: { name: 'cil-pencil' }
+  },
+  {
+    name: 'Add Store',
+    url: '/company/add-company',
+    linkProps: { fragment: 'headings' },
+    iconComponent: { name: 'cil-pencil' }
+  },
   // {
   //   name: 'Components',
   //   title: true
