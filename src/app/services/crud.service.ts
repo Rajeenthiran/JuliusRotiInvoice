@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Auth} from '@angular/fire/auth';
-import {addDoc, collection, doc, Firestore, setDoc} from '@angular/fire/firestore';
+import {addDoc, collection, collectionData, doc, Firestore, setDoc} from '@angular/fire/firestore';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class CRUDService {
       storePhone: stores.storePhone,
       address:stores.address});
 
+  }
+  getStores(): Observable<any[]> {
+    const storesCollection = collection(this.firestore, this.storeDbName);
+    return collectionData(storesCollection,{idField:'id'}) as Observable<any[]>;
   }
 }

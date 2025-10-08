@@ -20,7 +20,14 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Company / Name of Person</label>
-            <input type="text" class="form-control" placeholder="Enter name" />
+            <select aria-label=""  cSelect name="selectStore" [(ngModel)]="selectStore" (change)="changeStores()" >
+              @for (stores of storesList; track stores){
+                <option [value]="stores.id">{{stores.storeName}}</option>
+              }@empty {
+              <li>There are no items.</li>
+              }
+
+            </select>
           </div>
           <div class="col-md-6">
             <label class="form-label">Contact Name / Phone #</label>
@@ -35,10 +42,21 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">Delivery Address (If pickup, write JULIUS)</label>
-            <input type="text" class="form-control" placeholder="Enter address" />
+            <input type="text" class="form-control" name="deliveryAddress" [(ngModel)]="deliveryAddress" placeholder="Enter address" />
           </div>
         </div>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label class="form-label">Delivery Type (Delivery/Pickup)</label>
+            <select aria-label=""  cSelect>
+              <option value="Delivery">Delivery</option>
+              <option value="Pickup">Pickup</option>
+            </select>
+          </div>
+          <div class="col-md-6">
 
+          </div>
+        </div>
         <!-- Item Table -->
         <h5 class="section-title">Order Details</h5>
 
@@ -127,7 +145,20 @@
           <h5>Total Amount: <strong>${{ getTotal() }}</strong></h5>
         </div>
 
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Paid (Yes/No)</label>
+            <select aria-label=""  cSelect>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Comment</label>
+            <textarea cFormControl id="floatingTextarea" placeholder="Leave a comment here"></textarea>
 
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-10">
 
