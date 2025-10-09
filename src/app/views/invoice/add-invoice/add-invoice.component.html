@@ -9,7 +9,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Invoice No</label>
-            <input type="text" class="form-control" placeholder="Enter name" />
+          <h2> JS0000{{invoiceListLen+1}}</h2>
           </div>
           <div class="col-md-6">
             <label class="form-label">Date</label>
@@ -31,14 +31,14 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">Contact Name / Phone #</label>
-            <input type="text" class="form-control" placeholder="Enter phone" />
+            <input type="text" name="contactNumber" [(ngModel)]="contactNumber" class="form-control" placeholder="Enter phone" />
           </div>
         </div>
 
         <div class="row mb-4">
           <div class="col-md-6">
             <label class="form-label">Delivery Date and Time / Pickup Time</label>
-            <input type="datetime-local" class="form-control" />
+            <input type="datetime-local" name="deliveryDT" [(ngModel)]="deliveryDT" class="form-control" />
           </div>
           <div class="col-md-6">
             <label class="form-label">Delivery Address (If pickup, write JULIUS)</label>
@@ -48,7 +48,7 @@
         <div class="row mb-4">
           <div class="col-md-6">
             <label class="form-label">Delivery Type (Delivery/Pickup)</label>
-            <select aria-label=""  cSelect>
+            <select aria-label="" name="deliveryType" [(ngModel)]="deliveryType" cSelect>
               <option value="Delivery">Delivery</option>
               <option value="Pickup">Pickup</option>
             </select>
@@ -72,65 +72,16 @@
             </tr>
             </thead>
             <tbody>
+            @for (order of orders;track order){
             <tr>
-              <td>1</td>
-              <td>500 GRAM - KOTHU ROTI</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="3.15" /></td>
-              <td>3.15</td>
+              <td>{{order.no}}</td>
+              <td>{{order.name}}</td>
+              <td><input type="number" class="form-control text-center" [value]="order.qty" name="qty" [(ngModel)]="order.qty"  (change)="updateTotal(order)"
+          min="0" /></td>
+              <td>{{order.price|currency}}</td>
+              <td>{{order.total|currency}}</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>1 KILOGRAM - KOTHU ROTI</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="6.00" /></td>
-              <td>6.00</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>2 KILOGRAM - KOTHU ROTI</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="25.00" /></td>
-              <td>25.00</td>
-            </tr>
-
-
-
-            <tr>
-              <td>4</td>
-              <td>5 KILOGRAM - KOTHU ROTI</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="35.00" /></td>
-              <td>35.00</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>7 KILOGRAM - KOTHU ROTI</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="11.00" /></td>
-              <td>11.00</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>ROUND PARATHA (4 PIECES)</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="3.75" /></td>
-              <td>3.75</td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td>SQUARE PARATHA (4 PIECES)</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="3.75" /></td>
-              <td>3.75</td>
-            </tr>
-            <tr>
-              <td>8</td>
-              <td>CASSAVA CHIPS</td>
-              <td><input type="number" class="form-control text-center" value="1" /></td>
-              <td><input type="number" class="form-control text-center" value="6.00" /></td>
-              <td>6.00</td>
-            </tr>
+            }
             </tbody>
           </table>
         </div>
@@ -142,20 +93,20 @@
 
         <!-- Total -->
         <div class="total-section text-end mt-4">
-          <h5>Total Amount: <strong>${{ getTotal() }}</strong></h5>
+          <h5>Total Amount: <strong>{{ totalPrice|currency }}</strong></h5>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Paid (Yes/No)</label>
-            <select aria-label=""  cSelect>
+            <select aria-label="" name="paid" [(ngModel)]="paid"  cSelect>
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
           </div>
           <div class="col-md-6">
             <label class="form-label">Comment</label>
-            <textarea cFormControl id="floatingTextarea" placeholder="Leave a comment here"></textarea>
+            <textarea cFormControl id="floatingTextarea" name="comment" [(ngModel)]="comment" placeholder="Leave a comment here"></textarea>
 
           </div>
         </div>
@@ -164,8 +115,8 @@
 
           </div>
           <div class="col-md-2">
-            <button type="button" class="btn btn-outline-primary mt-2" (click)="addItem()">
-              <i class="cil-plus"></i> Submit
+            <button type="button" class="btn btn-outline-primary mt-2" (click)="submitInvoice()">
+              <i class="cil-plus"></i> Add Invoice
             </button>
           </div>
         </div>

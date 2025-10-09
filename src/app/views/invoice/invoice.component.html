@@ -1,1 +1,115 @@
-<p>invoice works!</p>
+<c-row class="justify-content-center mt-4">
+  <div class="col-12 col-lg-12">
+  <c-card class="shadow-sm border-0 rounded-3">
+      <c-card-header class="bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">📄 Invoices</h4>
+        <button class="btn btn-light btn-sm fw-semibold" (click)="refreshInvoices()">
+          <i class="cil-reload me-1"></i> Refresh
+        </button>
+      </c-card-header>
+
+      <c-card-body class="p-4">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped align-middle text-center">
+            <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Invoice No</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Total Amount</th>
+              <th>Paid</th>
+              <th>Comment</th>
+              <th>Order Details</th>
+             @if(adminRole){ <th >Actions</th> }
+            </tr>
+            </thead>
+
+            <tbody>
+            @for (invoice of invoiceList; track invoice) {
+            <tr (click)="toggleExpand(invoice)" class="cursor-pointer">
+              <td>{{ $index + 1 }}</td>
+                  <td class="fw-bold text-primary">{{ invoice.invoiceNo }}</td>
+                  <td>{{ invoice.storeName }}</td>
+                  <td>{{ invoice.date  }}</td>
+                  <td class="fw-semibold">{{ invoice.totalAmount | currency }}</td>
+                  <td>
+                    <span
+                      class="badge"
+                      [class]="{
+            'bg-success': invoice.paid === 'Yes',
+            'bg-danger': invoice.paid === 'No'
+            }"
+                    >
+            {{ invoice.paid }}
+            </span>
+          </td>
+           <td>{{ invoice.comment  }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="toggleExpand(invoice); $event.stopPropagation()"
+            > Expand
+              <i
+                [class]="
+                  invoice.expanded ? 'cil-chevron-top' : 'cil-chevron-bottom'
+                "
+              ></i>
+            </button>
+          </td>
+        </tr>
+
+        @if (invoice.expanded) {
+            <tr>
+              <td colspan="7" class="p-0">
+                <div class="bg-light p-3 border-top animate__animated animate__fadeIn">
+                  <div class="text-start mb-2">
+                    <h6 class="fw-bold text-secondary mb-0">Order Details</h6>
+                  </div>
+
+                  <table class="table table-sm table-bordered text-center mb-0">
+                    <thead class="table-light">
+                    <tr>
+                      <th>No.</th>
+                      <th>Description</th>
+                      <th>Qty</th>
+                      <th>Price ($)</th>
+                      <th>Total ($)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @for (item of invoice.orders; track item) {
+                    <tr>
+                      <td>{{ item.no }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.qty }}</td>
+                                <td>{{ item.price | currency }}</td>
+                                <td>{{ item.total | currency }}</td>
+                              </tr>
+                    }
+                    </tbody>
+                  </table>
+
+                  <div class="text-end mt-3">
+                    <h6 class="fw-bold">
+                      Total: <span class="text-primary">{{ invoice.totalAmount | currency}}</span>
+                    </h6>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            }
+            } @empty {
+            <tr>
+              <td colspan="7" class="py-4 text-muted">
+                <i class="cil-info me-1"></i> No invoices available.
+              </td>
+            </tr>
+            }
+            </tbody>
+          </table>
+        </div>
+      </c-card-body>
+    </c-card>
+  </div>
+</c-row>

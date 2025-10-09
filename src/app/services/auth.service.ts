@@ -78,14 +78,16 @@ export class AuthService {
     await signOut(this.auth);
     this.currentUser = null;
     localStorage.setItem('uid','');
+    localStorage.setItem('UserData','');
     await this.router.navigate(['/login']);
   }
   setUser(user:any){
     localStorage.setItem('uid', user.uid);
+    localStorage.setItem('UserData',JSON.stringify(user));
     this.currentUser=user;
   }
   getUser(){
-    return this.currentUser;
+    return localStorage.getItem('UserData');
   }
 
   getUid(){
