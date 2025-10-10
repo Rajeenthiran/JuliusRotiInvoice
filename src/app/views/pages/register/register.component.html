@@ -40,9 +40,13 @@
               <div class="d-grid">
                 <button cButton color="success" (click)="register()">Create Account</button>
               </div>
+              <span>---------------------------------- OR -------------------------------</span>
+              <div class="d-grid">
+                <button cButton color="primary" (click)="navigateLogin()">Login</button><br/>
+              </div>
             </form>
           </c-card-body>
-          <button cButton color="primary" (click)="navigateLogin()">Login</button><br/>
+
           @if (alert!='') {
           <div class="alert alert-danger" role="alert">
               {{alert}}

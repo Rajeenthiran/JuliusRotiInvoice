@@ -14,6 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CurrencyPipe, DecimalPipe, NgStyle} from '@angular/common';
 import {CRUDService} from '../../../services/crud.service';
 import {OrderService} from '../../../services/order.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-invoice',
@@ -108,11 +109,16 @@ export class AddInvoiceComponent {
       paid: this.paid,
       comment: this.comment,
       totalAmount: this.totalPrice,
-      createdAt: new Date()
+      createdAt: new Date(),
+      createdBy:JSON.parse(this.userInfo).username
     };
     console.log(invoiceData)
     this.orderService.addInvoices(invoiceData).then((res)=>{
       console.log('done')
+      Swal.fire({
+        title: 'Success!',
+        text: 'Invoice details added',
+      });
     })
   }
 }

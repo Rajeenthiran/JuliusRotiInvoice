@@ -28,10 +28,10 @@ import {AuthService} from '../../../services/auth.service';
 @Component({
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
-  imports: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, NavItemComponent, NavLinkDirective, RouterLink, RouterLinkActive, NgTemplateOutlet, BreadcrumbRouterComponent, DropdownComponent, DropdownToggleDirective, AvatarComponent, DropdownMenuDirective, DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective]
+  imports: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, NavItemComponent, NavLinkDirective, RouterLink, RouterLinkActive, NgTemplateOutlet, BreadcrumbRouterComponent, DropdownComponent, DropdownToggleDirective, AvatarComponent, DropdownMenuDirective, DropdownItemDirective]
 })
 export class DefaultHeaderComponent extends HeaderComponent {
-
+  username:any='';
   readonly #colorModeService = inject(ColorModeService);
   readonly colorMode = this.#colorModeService.colorMode;
 
@@ -48,6 +48,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   constructor(private auth:AuthService) {
     super();
+    let user=auth.getUser();
+    if(user){
+      this.username=JSON.parse(user).username;
+    }
+
   }
 
   sidebarId = input('sidebar1');

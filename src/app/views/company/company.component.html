@@ -1,1 +1,59 @@
-<p>company works!</p>
+<hr class="my-4" />
+
+<h4 class="text-primary mb-3">🏬 Store List</h4>
+
+<div class="table-responsive">
+  <table class="table table-hover table-striped align-middle text-center w-100">
+    <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Store Name</th>
+      <th>Contact Name</th>
+      <th>Contact Email</th>
+      <th>Store Phone</th>
+      <th>Personal Phone</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (store of storeList; track store) {
+      <tr>
+      <td>{{ $index + 1 }}</td>
+      <td class="fw-bold text-primary">{{ store.storeName }}</td>
+      <td>{{ store.contactName }}</td>
+      <td>{{ store.contactEmail }}</td>
+      <td>{{ store.storePhone }}</td>
+      <td>{{ store.personalPhone }}</td>
+      <td>
+      {{ store.address.street }},
+      {{ store.address.unit }},
+      {{ store.address.city }},
+    {{ store.address.province }},
+    {{ store.address.postalCode }}
+    </td>
+    <td>
+      <button
+        class="btn btn-sm btn-outline-info me-1"
+        (click)="editStore(store)"
+      >
+        <i class="cil-pencil"></i> Edit
+      </button>
+      <button
+        class="btn btn-sm btn-outline-danger"
+        (click)="deleteStore(store)"
+      > Delete
+        <i class="cil-trash"></i>
+      </button>
+    </td>
+  </tr>
+    } @empty {
+    <tr>
+      <td colspan="8" class="py-4 text-muted">
+        <i class="cil-info me-1"></i> No stores added yet.
+      </td>
+    </tr>
+    }
+    </tbody>
+  </table>
+</div>

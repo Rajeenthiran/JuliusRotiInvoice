@@ -95,7 +95,8 @@ export class OrderService {
       paid: invoices.paid,
       comment: invoices.comment,
       totalAmount: invoices.totalAmount,
-      createdAt: new Date()
+      createdAt: new Date(),
+      createdBy:invoices.createdBy
     });
   }
   getInvoiceDetails(){
