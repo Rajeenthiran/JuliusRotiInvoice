@@ -76,7 +76,7 @@
             <tr>
               <td>{{order.no}}</td>
               <td>{{order.name}}</td>
-              <td><input type="number" class="form-control text-center" [value]="order.qty" name="qty" [(ngModel)]="order.qty"  (change)="updateTotal(order)"
+              <td><input type="number"  inputmode="numeric" class="form-control text-center" [value]="order.qty" name="qty" [(ngModel)]="order.qty" (input)="updateTotal(order)" (change)="updateTotal(order)"
           min="0" /></td>
               <td>{{order.price|currency}}</td>
               <td>{{order.total|currency}}</td>
