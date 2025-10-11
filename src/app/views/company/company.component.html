@@ -13,7 +13,7 @@
       <th>Store Phone</th>
       <th>Personal Phone</th>
       <th>Address</th>
-      <th>Action</th>
+      @if(adminRole){  <th>Action</th>}
     </tr>
     </thead>
     <tbody>
@@ -32,7 +32,8 @@
     {{ store.address.province }},
     {{ store.address.postalCode }}
     </td>
-    <td>
+    @if(adminRole){
+      <td>
       <button
         class="btn btn-sm btn-outline-info me-1"
         (click)="editStore(store)"
@@ -46,6 +47,7 @@
         <i class="cil-trash"></i>
       </button>
     </td>
+      }
   </tr>
     } @empty {
     <tr>

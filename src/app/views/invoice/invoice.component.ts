@@ -39,7 +39,7 @@ export class InvoiceComponent {
     invoice.expanded = !invoice.expanded;
   }
   getStoreName(storeId:any){
-      return this.storeList.find((store:any)=>store.id==storeId).storeName;
+      return this.storeList.find((store:any)=>store.id==storeId)?.storeName;
   }
   refreshInvoices(){
     this.getInvoiceList();
@@ -59,9 +59,11 @@ export class InvoiceComponent {
     });
   }
   toggleExpandStore(invoice: any){
-    invoice.expandedStore = !invoice.expandedStore;
-    this.currentStore=this.storeList.find((store:any)=>store.id==invoice.storeId);
-    console.log(this.currentStore)
+      if(invoice.storeId){
+        invoice.expandedStore = !invoice.expandedStore;
+        this.currentStore=this.storeList.find((store:any)=>store.id==invoice.storeId);
+      }
+
   }
   getAddress(address:any){
     return `${address.street}, ${address.unit}, ${address.city}, ${address.province}, ${address.postalCode}`;

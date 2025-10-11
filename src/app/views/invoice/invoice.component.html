@@ -118,14 +118,14 @@
               </td>
             </tr>
             }
-            @if (invoice.expandedStore) {
+            @if (invoice.expandedStore&&currentStore) {
             <tr>
               <td colspan="7" class="p-0">
                 <div class="bg-light p-3 border-top animate__animated animate__fadeIn">
                   <div class="text-start mb-2">
                     <h6 class="fw-bold text-secondary mb-0">Store Details</h6>
                   </div>
-
+                  @if (currentStore) {
                   <table class="table table-sm table-bordered text-center mb-0">
                     <thead class="table-light">
                     <tr>
@@ -145,6 +145,7 @@
                     }
                     </tbody>
                   </table>
+                  }
                 </div>
               </td>
             </tr>

@@ -8,7 +8,7 @@ import {
   ColComponent, ColDirective, FormControlDirective,
   FormDirective, FormLabelDirective, GutterDirective,
   FormSelectDirective,
-  RowComponent, RowDirective
+  RowComponent, RowDirective, FormFeedbackComponent
 } from '@coreui/angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CurrencyPipe, DecimalPipe, NgStyle} from '@angular/common';
@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-invoice',
-  imports: [RowComponent,CurrencyPipe, CardComponent,FormControlDirective, ReactiveFormsModule, FormsModule,FormSelectDirective],
+  imports: [FormFeedbackComponent,RowComponent,CurrencyPipe, CardComponent,FormControlDirective, ReactiveFormsModule, FormsModule,FormSelectDirective],
   templateUrl: './add-invoice.component.html',
   styleUrl: './add-invoice.component.scss'
 })
@@ -35,8 +35,10 @@ export class AddInvoiceComponent {
   paid='Yes';
   comment='';
   totalPrice=0;
+  valid=true;
 
   invoiceListLen=0;
+  invoiceDetails:any=[];
 
   orders:any=[];
 
@@ -61,19 +63,30 @@ export class AddInvoiceComponent {
   getInvoiceLen(){
      this.orderService.getInvoiceDetails().subscribe((res)=>{
        if(res&&res.length){
+         this.invoiceDetails=res;
+         console.log(res);
         this.invoiceListLen=res.length;
        }
      })
   }
   changeStores(){
-    console.log(this.selectStore)
     if(this.storesList.length>0){
         this.storesList.map((store:any)=>{
-          console.log(store)
           if(store.id==this.selectStore){
             this.deliveryAddress=store.address.street+','+store.address.city+','+store.address.province+' '+
               store.address.postalCode;
-            this.contactNumber=store.storePhone
+            this.contactNumber=store.storePhone;
+            if(this.invoiceDetails){
+              let lastInvoice=this.invoiceDetails.find((res:any)=>res.storeId=this.selectStore);
+              console.log(lastInvoice)
+              let orderDetails=lastInvoice.orders;
+              console.log(orderDetails)
+              if(orderDetails){
+                this.orders=orderDetails;
+                this.updateTotal(this.orders);
+              }
+            }
+
           }
         })
     }
@@ -96,7 +109,7 @@ export class AddInvoiceComponent {
   }
 
   submitInvoice(){
-    console.log('len:'+this.invoiceListLen);
+  if(this.checkValidation()){
     const invoiceData = {
       invoiceNo: 'JS000'+(this.invoiceListLen+1),
       date: this.selectedDate,
@@ -114,11 +127,27 @@ export class AddInvoiceComponent {
     };
     console.log(invoiceData)
     this.orderService.addInvoices(invoiceData).then((res)=>{
-      console.log('done')
       Swal.fire({
         title: 'Success!',
         text: 'Invoice details added',
+        icon: "success"
       });
-    })
+    });
+  }
+
+  }
+  checkValidation(){
+     let validation=false;
+     if(this.selectStore!=null&&this.selectStore!=''){
+        validation=true;
+     }else{
+       this.valid=false;
+       Swal.fire({
+         title: 'Warning!',
+         text: 'Please enter required fields',
+         icon: "warning"
+       });
+     }
+     return validation;
   }
 }

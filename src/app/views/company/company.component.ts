@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {CRUDService} from '../../services/crud.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-company',
@@ -9,7 +10,12 @@ import {CRUDService} from '../../services/crud.service';
 })
 export class CompanyComponent {
   storeList: any[] = [];
-  constructor(private crudService:CRUDService) {
+  adminRole:boolean=false;
+  constructor(private crudService:CRUDService,private auth:AuthService) {
+    let user:any=auth.getUser();
+    if(JSON.parse(user).role=='admin'){
+      this.adminRole=true;
+    }
     crudService.getStores().subscribe((res)=>{
       if(res){
         this.storeList=res;

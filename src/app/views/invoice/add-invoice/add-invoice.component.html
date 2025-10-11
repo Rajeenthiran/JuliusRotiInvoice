@@ -4,7 +4,11 @@
     <h2 class="invoice-title">JULIUS EVENT CENTRE - INVOICE</h2>
 
     <c-card class="invoice-card">
-      <form>
+      <form #customStylesForm="ngForm"
+
+            novalidate
+            cForm cRow
+            class="needs-validation">
         <!-- Customer Info -->
         <div class="row mb-3">
           <div class="col-md-6">
@@ -20,7 +24,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Company / Name of Person</label>
-            <select aria-label=""  cSelect name="selectStore" [(ngModel)]="selectStore" (change)="changeStores()" >
+            <select aria-label="" id="validationCustom04"  required cSelect name="selectStore" [(ngModel)]="selectStore" (change)="changeStores()" >
               @for (stores of storesList; track stores){
                 <option [value]="stores.id">{{stores.storeName}}</option>
               }@empty {
@@ -28,6 +32,8 @@
               }
 
             </select>
+            <c-form-feedback [valid]="valid">Please select a valid Store.</c-form-feedback>
+
           </div>
           <div class="col-md-6">
             <label class="form-label">Contact Name / Phone #</label>
@@ -76,7 +82,7 @@
             <tr>
               <td>{{order.no}}</td>
               <td>{{order.name}}</td>
-              <td><input type="number"  inputmode="numeric" class="form-control text-center" [value]="order.qty" name="qty" [(ngModel)]="order.qty" (input)="updateTotal(order)" (change)="updateTotal(order)"
+              <td><input type="number"  inputmode="numeric" class="form-control text-center"  name="qty{{ $index }}" [(ngModel)]="order.qty" (input)="updateTotal(order)" (change)="updateTotal(order)"
           min="0" /></td>
               <td>{{order.price|currency}}</td>
               <td>{{order.total|currency}}</td>
@@ -115,7 +121,7 @@
 
           </div>
           <div class="col-md-2">
-            <button type="button" class="btn btn-outline-primary mt-2" (click)="submitInvoice()">
+            <button type="submit" class="btn btn-outline-primary mt-2" (click)="submitInvoice()">
               <i class="cil-plus"></i> Add Invoice
             </button>
           </div>
