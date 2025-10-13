@@ -34,7 +34,7 @@ export class AddCompanyComponent {
   ];
 
   citiesByProvince: any = {
-    ON: ['Toronto', 'Scarborough', 'Ottawa', 'Mississauga'],
+    ON: ['Toronto', 'Scarborough', 'Ottawa', 'Mississauga','Etobicoke','Maple','Brampton'],
     QC: ['Montreal', 'Quebec City'],
     BC: ['Vancouver', 'Victoria'],
     AB: ['Calgary', 'Edmonton']
