@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CRUDService} from '../../services/crud.service';
 import {AuthService} from '../../services/auth.service';
-
+import {NavigationExtras, Router} from '@angular/router';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-company',
   imports: [],
@@ -9,6 +10,7 @@ import {AuthService} from '../../services/auth.service';
   styleUrl: './company.component.scss'
 })
 export class CompanyComponent {
+  private router = inject(Router);
   storeList: any[] = [];
   adminRole:boolean=false;
   constructor(private crudService:CRUDService,private auth:AuthService) {
@@ -23,9 +25,18 @@ export class CompanyComponent {
     })
   }
   deleteStore(store:any){
-
+  this.crudService.deleteStore(store.id).then(r => {
+    Swal.fire({
+      title: 'Success!',
+      text: 'Store details deleted',
+    });
+  });
   }
   editStore(store:any){
-
+    const navigationExtras: NavigationExtras = {
+      state:{"store":store}
+    };
+    this.router.navigate(['/company/add-company'],navigationExtras);
   }
+
 }

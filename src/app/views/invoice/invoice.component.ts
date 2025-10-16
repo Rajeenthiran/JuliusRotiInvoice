@@ -24,7 +24,6 @@ export class InvoiceComponent {
       }
       crudService.getStores().subscribe((res)=>{
         if(res){
-          console.log(res);
           this.storeList=res;
         }
       })

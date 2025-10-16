@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
   async canActivate(): Promise<boolean> {
     return new Promise((resolve) => {
       let uid=this.auth.getUid();
-      console.log('uid:'+uid);
       if(uid){
         resolve(true)
       }else{

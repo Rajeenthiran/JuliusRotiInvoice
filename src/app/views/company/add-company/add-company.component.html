@@ -79,9 +79,20 @@
 
           </div>
           <div class="col-md-2">
+
+
+             @if(isEdit){
+            <button type="button" class="btn btn-outline-warning mt-2" (click)="editStore()">
+           Edit
+         </button>
+              }
+              @else{
             <button type="button" class="btn btn-outline-primary mt-2" (click)="addStore()">
-              <i class="cil-plus"></i> Add
+              Add
             </button>
+              }
+
+
           </div>
         </div>
 

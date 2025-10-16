@@ -35,7 +35,7 @@ export class AuthService {
       // ✅ Step 3: Send email verification
     //  await sendEmailVerification(user);
 
-      console.log('User registered and role assigned!');
+
      // this.router.navigate(['/login']);
 
     } catch (error) {
