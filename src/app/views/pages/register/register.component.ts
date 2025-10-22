@@ -51,7 +51,7 @@ export class RegisterComponent {
       this.alert='Confirm password is different';
     }else{
       this.authService.register(this.username,this.email,this.password,this.role).then((res)=>{
-        console.log(res);
+
       })
     }
   }

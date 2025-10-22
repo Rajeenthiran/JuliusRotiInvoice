@@ -30,12 +30,10 @@ export class LoginComponent implements OnInit{
   constructor(private authService:AuthService) {
   }
   navigateRegister() {
-    console.log('register');
     this.router.navigate(['/register']);
   }
 
   ngOnInit(): void {
-    console.log('login')
   }
   login(){
     this.authService.login(this.username,this.password);
