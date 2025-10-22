@@ -19,7 +19,6 @@ export class AddCompanyComponent {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state) {
       let store=navigation.extras.state['store'];
-      console.log(store)
       if(store){
         this.storeName = store.storeName;
         this.contactName = store.contactName;

@@ -13,7 +13,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Invoice No</label>
-          <h2> JS0000{{invoiceListLen+1}}</h2>
+          <h2> {{invoiceListLen}}</h2>
           </div>
           <div class="col-md-6">
             <label class="form-label">Date</label>
@@ -121,9 +121,16 @@
 
           </div>
           <div class="col-md-2">
+            @if(isEdit){
+            <button type="submit" class="btn btn-outline-warning mt-2" (click)="editInvoice()">
+              <i class="cil-plus"></i> Edit Invoice
+            </button>
+            }@else{
             <button type="submit" class="btn btn-outline-primary mt-2" (click)="submitInvoice()">
               <i class="cil-plus"></i> Add Invoice
             </button>
+            }
+
           </div>
         </div>
 

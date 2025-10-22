@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AuthService} from '../../../services/auth.service';
 import {
   ButtonDirective,
@@ -15,6 +15,7 @@ import {CurrencyPipe, DecimalPipe, NgStyle} from '@angular/common';
 import {CRUDService} from '../../../services/crud.service';
 import {OrderService} from '../../../services/order.service';
 import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-invoice',
@@ -23,6 +24,7 @@ import Swal from 'sweetalert2';
   styleUrl: './add-invoice.component.scss'
 })
 export class AddInvoiceComponent {
+  private router = inject(Router);
   userInfo:any;
   selectedDate:string = '';
   dateEntered:string = '';
@@ -37,35 +39,57 @@ export class AddInvoiceComponent {
   totalPrice=0;
   valid=true;
 
-  invoiceListLen=0;
+  invoiceListLen='';
   invoiceDetails:any=[];
 
   orders:any=[];
+  isEdit:boolean=false;
+  invoiceId:string='';
 
    constructor(private authService:AuthService,private crudServices:CRUDService,private orderService:OrderService) {
-     this.getInvoiceLen();
      this.orders=orderService.getOrders();
      this.userInfo=authService.getUser();
-     console.log(this.userInfo);
      const today = new Date();
 
      this.selectedDate = today.toISOString().substring(0, 10);
      this.dateEntered = today.toISOString().substring(0, 10);
      crudServices.getStores().subscribe((res)=>{
-       console.log(res);
        if(res){
          this.storesList=res;
        }
 
      });
+     const navigation = this.router.getCurrentNavigation();
+     if (navigation && navigation.extras.state) {
+       let sourceData = navigation.extras.state['invoice'];
+       if (sourceData) {
+         this.invoiceId=sourceData.id;
+         this.selectedDate = sourceData.date;
+         this.dateEntered = sourceData.dateEntered;
+         this.selectStore = sourceData.storeId;
+         this.deliveryAddress = sourceData.deliveryAddress;
+         this.contactNumber = sourceData.contactNumber;
+         this.deliveryType = sourceData.deliveryType;
+         this.deliveryDT = sourceData.deliveryDateTime;
+         this.paid = sourceData.paid;
+         this.comment = sourceData.comment;
+         this.totalPrice = sourceData.totalPrice;
+         this.valid = sourceData.valid;
+         this.invoiceListLen = sourceData.invoiceNo;
+         this.invoiceDetails = sourceData.invoiceDetails;
+         this.orders = sourceData.orders;
+         this.isEdit=true;
+       }else{
+         this.getInvoiceLen();
+       }
+     }
    }
 
   getInvoiceLen(){
      this.orderService.getInvoiceDetails().subscribe((res)=>{
        if(res&&res.length){
          this.invoiceDetails=res;
-         console.log(res);
-        this.invoiceListLen=res.length;
+        this.invoiceListLen='JS0000'+(res.length+1);
        }
      })
   }
@@ -77,14 +101,15 @@ export class AddInvoiceComponent {
               store.address.postalCode;
             this.contactNumber=store.storePhone;
             if(this.invoiceDetails){
-              let lastInvoice=this.invoiceDetails.find((res:any)=>res.storeId=this.selectStore);
-              console.log(lastInvoice)
-              let orderDetails=lastInvoice.orders;
-              console.log(orderDetails)
-              if(orderDetails){
-                this.orders=orderDetails;
-                this.updateTotal(this.orders);
+              let lastInvoice=this.invoiceDetails.find((res:any)=>res.storeId==this.selectStore);
+              if(lastInvoice){
+                let orderDetails=lastInvoice.orders;
+                if(orderDetails){
+                  this.orders=orderDetails;
+                  this.updateTotal(this.orders);
+                }
               }
+
             }
 
           }
@@ -111,7 +136,7 @@ export class AddInvoiceComponent {
   submitInvoice(){
   if(this.checkValidation()){
     const invoiceData = {
-      invoiceNo: 'JS000'+(this.invoiceListLen+1),
+      invoiceNo: this.invoiceListLen,
       date: this.selectedDate,
       storeId: this.selectStore,
       contactNumber: this.contactNumber,
@@ -125,7 +150,6 @@ export class AddInvoiceComponent {
       createdAt: new Date(),
       createdBy:JSON.parse(this.userInfo).username
     };
-    console.log(invoiceData)
     this.orderService.addInvoices(invoiceData).then((res)=>{
       Swal.fire({
         title: 'Success!',
@@ -134,6 +158,34 @@ export class AddInvoiceComponent {
       });
     });
   }
+
+  }
+  editInvoice(){
+    if(this.checkValidation()){
+      const invoiceData = {
+        id:this.invoiceId,
+        invoiceNo: this.invoiceListLen,
+        date: this.selectedDate,
+        storeId: this.selectStore,
+        contactNumber: this.contactNumber,
+        orders:this.orders,
+        deliveryDateTime: this.deliveryDT,
+        deliveryAddress: this.deliveryAddress,
+        deliveryType: this.deliveryType,
+        paid: this.paid,
+        comment: this.comment,
+        totalAmount: this.totalPrice,
+        createdAt: new Date(),
+        createdBy:JSON.parse(this.userInfo).username
+      };
+      this.orderService.updateInvoice(invoiceData).then((res)=>{
+        Swal.fire({
+          title: 'Success!',
+          text: 'Invoice details updated',
+          icon: "success"
+        });
+      });
+    }
 
   }
   checkValidation(){

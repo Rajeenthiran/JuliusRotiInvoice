@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {addDoc, collection, collectionData, Firestore} from '@angular/fire/firestore';
+import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -92,6 +92,7 @@ export class OrderService {
       contactNumber: invoices.contactNumber,
       deliveryAddress: invoices.deliveryAddress,
       deliveryType: invoices.deliveryType,
+      deliveryDateTime: invoices.deliveryDateTime,
       paid: invoices.paid,
       comment: invoices.comment,
       totalAmount: invoices.totalAmount,
@@ -99,8 +100,32 @@ export class OrderService {
       createdBy:invoices.createdBy
     });
   }
+  async updateInvoice(invoices: any) {
+    const storeDocRef = doc(this.firestore, this.invoiceDbName, invoices.id);
+    return await updateDoc(storeDocRef, {
+      invoiceNo: invoices.invoiceNo,
+      date: invoices.date,
+      storeId: invoices.storeId,
+      orders:invoices.orders,
+      contactNumber: invoices.contactNumber,
+      deliveryAddress: invoices.deliveryAddress,
+      deliveryType: invoices.deliveryType,
+      deliveryDateTime: invoices.deliveryDateTime,
+      paid: invoices.paid,
+      comment: invoices.comment,
+      totalAmount: invoices.totalAmount,
+      createdAt: new Date(),
+      createdBy:invoices.createdBy
+    });
+
+  }
   getInvoiceDetails(){
     const invoiceCollection = collection(this.firestore, this.invoiceDbName);
     return collectionData(invoiceCollection,{idField:'id'}) as Observable<any[]>;
+  }
+  async deleteInvoice(id: string) {
+    const invoiceCollection = doc(this.firestore, this.invoiceDbName, id);
+    return await deleteDoc(invoiceCollection);
+
   }
 }

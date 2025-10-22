@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {OrderService} from '../../services/order.service';
 import {CurrencyPipe} from '@angular/common';
 import {CardBodyComponent, CardComponent, CardHeaderComponent, RowComponent} from '@coreui/angular';
 import {AuthService} from '../../services/auth.service';
 import {CRUDService} from '../../services/crud.service';
+import Swal from 'sweetalert2';
+import {NavigationExtras, Router} from '@angular/router';
 
 @Component({
   selector: 'app-invoice',
@@ -12,6 +14,7 @@ import {CRUDService} from '../../services/crud.service';
   styleUrl: './invoice.component.scss'
 })
 export class InvoiceComponent {
+  private router = inject(Router);
   userInfo:any;
   adminRole:boolean=false;
   invoiceList:any = [];
@@ -28,8 +31,24 @@ export class InvoiceComponent {
         }
       })
       orderService.getInvoiceDetails().subscribe((res)=>{
-        if(res){
-          this.invoiceList=res;
+        // Check if res exists and is an array
+        if (res && Array.isArray(res)) {
+
+          // Sort the array in place
+          res.sort((a, b) => {
+            // ---
+            // IMPORTANT: Replace 'invoiceNumber' with the actual property name
+            // in your object that holds the "JS0001" value.
+            // ---
+            const valA = a.invoiceNo;
+            const valB = b.invoiceNo;
+
+            // Use localeCompare for smart sorting of alphanumeric strings
+            return valA.localeCompare(valB, undefined, { numeric: true });
+          });
+
+          // Assign the now-sorted array
+          this.invoiceList = res;
 
         }
       });
@@ -44,10 +63,18 @@ export class InvoiceComponent {
     this.getInvoiceList();
   }
   editInvoice(invoice:any){
-
+    const navigationExtras: NavigationExtras = {
+      state:{"invoice":invoice}
+    };
+    this.router.navigate(['/invoice/add-invoice'],navigationExtras);
   }
   deleteInvoice(invoice:any){
-
+      this.orderService.deleteInvoice(invoice.id).then((res)=>{
+        Swal.fire({
+          title: 'Success!',
+          text: 'Invoice details deleted',
+        });
+      })
   }
   getInvoiceList(){
     this.orderService.getInvoiceDetails().subscribe((res)=>{
