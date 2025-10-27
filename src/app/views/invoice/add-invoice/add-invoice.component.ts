@@ -90,6 +90,8 @@ export class AddInvoiceComponent {
        if(res&&res.length){
          this.invoiceDetails=res;
         this.invoiceListLen='JS0000'+(res.length+1);
+       }else{
+         this.invoiceListLen='JS00001';
        }
      })
   }
